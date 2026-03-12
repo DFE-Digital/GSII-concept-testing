@@ -1,5 +1,5 @@
 {
-  "serviceName": "Service name goes here",
+  "serviceName": "Get school improvement insights",
   "useServiceNavigation": true,
   "plugins": {
     "govuk-frontend": {
