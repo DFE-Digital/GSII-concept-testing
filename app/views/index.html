@@ -7,13 +7,31 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    {% include "govuk-prototype-kit/includes/homepage-top.njk" %}
+    <!-- Main page heading -->
+    <h1 class="govuk-heading-xl">{{ serviceName }}</h1>
 
-    <h1 class="govuk-heading-xl">
-      {{ serviceName }}
-    </h1>
+    <!-- Section heading -->
+    <h2 class="govuk-heading-m">Concept tests</h2>
 
-    {% include "govuk-prototype-kit/includes/homepage-bottom.njk" %}
+    <!-- Intro / lead paragraph instead of a small heading -->
+    <p class="govuk-body-l">
+      Analyse, interpret and improve. Concept tests for presenting data, insights, and suggested next steps.
+    </p>
+
+    <!-- Links to examples -->
+    <ul class="govuk-list govuk-list--bullet">
+      <li>
+        <a class="govuk-link" href="/concepts/test">
+          Maths attainment, with icon showing comparison to similar schools
+        </a>
+      </li>
+      <li>
+        <a class="govuk-link" href="/concepts/test-2">
+          Maths attainment, without icon
+        </a>
+      </li>
+    </ul>
+
   </div>
 </div>
 

@@ -15,14 +15,21 @@
 
 <style>
 /* -------------------------------------------------------
-   BAR CHART (soft lilac + blush)
+   BAR CHART (pink + blue)
 ------------------------------------------------------- */
 .bar-chart-wrapper {
   max-width: 650px;
   margin-top: 30px;
 }
-.bar-row { margin-bottom: 24px; }
-.bar-label { font-size: 19px; margin-bottom: 6px; font-family: "GDS Transport", Arial, sans-serif; }
+.bar-row {
+  margin-bottom: 24px;
+  position: relative;
+}
+.bar-label {
+  font-size: 19px;
+  margin-bottom: 6px;
+  font-family: "GDS Transport", Arial, sans-serif;
+}
 .bar-container {
   background: #f3f2f1;
   position: relative;
@@ -37,9 +44,11 @@
   line-height: 40px;
   color: #0b0c0c;
   font-family: "GDS Transport", Arial, sans-serif;
+  position: relative;
+  z-index: 1;
 }
-.bar-school { background: #f4d7e5; } /* blush */
-.bar-soft   { background: #ddd6ec; } /* lilac */
+.bar-school { background: 	#8eb8dc; } /* pink */
+.bar-soft   { background: #d2e2f1; } /* blue */
 .bar-text {
   position: absolute;
   right: 10px;
@@ -48,18 +57,42 @@
   color: #0b0c0c;
   line-height: 40px;
   font-family: "GDS Transport", Arial, sans-serif;
+  z-index: 2;
 }
-.bar-container:before,
-.bar-container:after {
+
+/* Vertical grid lines behind bars */
+.bar-container::before, .bar-container::after {
   content: "";
   position: absolute;
   top: 0; bottom: 0;
   border-left: 1px solid #b1b4b6;
-  opacity: 0.4;
+  opacity: 0.3;
   pointer-events: none;
 }
-.bar-container:before { left: 50%; }
-.bar-container:after  { left: 75%; }
+.bar-container::before { left: 50%; }
+.bar-container::after  { left: 75%; }
+
+/* Horizontal axis under bars */
+.bar-axis {
+  display: flex;
+  justify-content: space-between;
+  font-family: "GDS Transport", Arial, sans-serif;
+  font-size: 16px;
+  margin-top: 8px;
+  color: #0b0c0c;
+  position: relative;
+}
+.bar-axis span::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 1px;
+  height: 6px;
+  background: #505a5f;
+  transform: translateX(-50%);
+  opacity: 0.5;
+}
 
 /* -------------------------------------------------------
    INSIGHTS — Side-by-side with fixed left column
@@ -140,35 +173,34 @@
 }
 
 /* -------------------------------------------------------
-   ACTION CARDS — Larger GOV.UK-style, full medium text
+   ACTION CARDS — Larger squares, no rounded edges
 ------------------------------------------------------- */
-
 .action-card {
   display: grid;
-  grid-template-columns: 64px 1fr; /* larger tile */
+  grid-template-columns: 80px 1fr; /* larger square for icon */
   column-gap: 20px;
-  padding: 20px 0; /* more vertical space */
+  padding: 20px 0;
   align-items: start;
 }
 
 .action-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 6px; /* slightly smoother */
+  width: 80px;
+  height: 80px;
+  border-radius: 0;          /* remove rounding */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .action-icon svg {
-  width: 34px;
-  height: 34px; /* proportionally upscaled */
+  width: 40px;   /* scaled up proportionally */
+  height: 40px;
 }
 
 .action-content a {
   font-family: "GDS Transport", Arial, sans-serif;
-  font-weight: 700;
-  font-size: 1.1875rem;  /* GOV.UK body-m (19px) */
+  font-weight: 700;        /* bold */
+  font-size: 1.1875rem;    /* GOV.UK body-m (19px) */
   line-height: 1.3;
   text-decoration: underline;
   color: #1d70b8;
@@ -177,10 +209,11 @@
 .action-description {
   margin-top: 4px;
   font-family: "GDS Transport", Arial, sans-serif;
-  font-size: 1.1875rem;  /* match GOV.UK body-m */
+  font-size: 1.1875rem;    /* GOV.UK body-m (19px) */
   line-height: 1.45;
-  color: #505a5f;
+  color: #0b0c0c;           /* standard GOV.UK text colour */
 }
+
 </style>
 
 <div class="govuk-grid-row">
@@ -237,6 +270,15 @@
           <span class="bar-fill bar-soft" style="width: 50%;"></span>
           <span class="bar-text">50%</span>
         </div>
+      </div>
+
+      <!-- AXIS -->
+      <div class="bar-axis">
+        <span>0%</span>
+        <span>25%</span>
+        <span>50%</span>
+        <span>75%</span>
+        <span>100%</span>
       </div>
     </div>
     {% endset %}
@@ -297,46 +339,8 @@
       </div>
     </div>
 
-    <div class="insight-row">
-      <div class="insight-left">
-        <span class="insight-pill insight--increase">
-          <svg viewBox="0 0 20 20"><path d="M10 3 L3 10 H8 V17 H12 V10 H17 Z"/></svg>
-          +4.2%
-        </span>
-      </div>
-      <div class="insight-content">
-        <p class="insight-title">Attainment has improved over the last 3 years</p>
-        <p class="insight-meta">You’ve seen a steady improvement each year.</p>
-      </div>
-    </div>
-
-    <div class="insight-row">
-      <div class="insight-left">
-        <span class="insight-pill insight--neutral">
-          <svg viewBox="0 0 20 20"><path d="M3 9 H14 L10 5 L12 3 L19 10 L12 17 L10 15 L14 11 H3 Z"/></svg>
-          0%
-        </span>
-      </div>
-      <div class="insight-content">
-        <p class="insight-title">Your maths attainment is broadly in line with the national average</p>
-        <p class="insight-meta">There is no indication of significant concern at this stage.</p>
-      </div>
-    </div>
-
     <!-- WHAT YOU CAN DO NEXT -->
     <h2 id="improve" class="govuk-heading-m govuk-!-margin-top-7">3. Improve performance</h2>
-
-    <div class="action-card">
-      <div class="action-icon" style="background:#ddd6ec">
-        <svg viewBox="0 0 20 20"><path fill="#4c2c92" d="M10 2a8 8 0 110 16 8 8 0 010-16zm1 11V8H9v5h2zm0-7V5H9v1h2z"/></svg>
-      </div>
-      <div class="action-content">
-        <a href="#">Get support from your local maths hub</a>
-        <p class="action-description">
-          Maths hubs can help improve teaching through professional development and evidence‑based practice.
-        </p>
-      </div>
-    </div>
 
     <div class="action-card">
       <div class="action-icon" style="background:#f4d7e5">
@@ -346,6 +350,18 @@
         <a href="#">Connect with a high‑performing school</a>
         <p class="action-description">
           Schools with strong maths outcomes may be able to share strategies that worked for them.
+        </p>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon" style="background:#ddd6ec">
+        <svg viewBox="0 0 20 20"><path fill="#4c2c92" d="M10 2a8 8 0 110 16 8 8 0 010-16zm1 11V8H9v5h2zm0-7V5H9v1h2z"/></svg>
+      </div>
+      <div class="action-content">
+        <a href="#">Get support from your local maths hub</a>
+        <p class="action-description">
+          Maths hubs can help improve teaching through professional development and evidence‑based practice.
         </p>
       </div>
     </div>
