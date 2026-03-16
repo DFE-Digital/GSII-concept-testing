@@ -1,0 +1,365 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Content page template – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block containerStart %}
+{{ govukBackLink({
+text: "Back",
+href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* -------------------------------------------------------
+       BAR CHART (pink + blue)
+    ------------------------------------------------------- */
+    .bar-chart-wrapper {
+        max-width: 650px;
+        margin-top: 30px;
+    }
+    .bar-row {
+        margin-bottom: 24px;
+        position: relative;
+    }
+    .bar-label {
+        font-size: 19px;
+        margin-bottom: 6px;
+        font-family: "GDS Transport", Arial, sans-serif;
+    }
+    .bar-container {
+        background: #f3f2f1;
+        position: relative;
+        height: 40px;
+        border-left: 3px solid #0b0c0c;
+    }
+    .bar-fill {
+        height: 40px;
+        display: block;
+        font-weight: 700;
+        padding-left: 10px;
+        line-height: 40px;
+        color: #0b0c0c;
+        font-family: "GDS Transport", Arial, sans-serif;
+        position: relative;
+        z-index: 1;
+    }
+    .bar-school { background: 	#8eb8dc; } /* pink */
+    .bar-soft   { background: #d2e2f1; } /* blue */
+    .bar-text {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        font-weight: 700;
+        color: #0b0c0c;
+        line-height: 40px;
+        font-family: "GDS Transport", Arial, sans-serif;
+        z-index: 2;
+    }
+
+    /* Vertical grid lines behind bars */
+    .bar-container::before, .bar-container::after {
+        content: "";
+        position: absolute;
+        top: 0; bottom: 0;
+        border-left: 1px solid #b1b4b6;
+        opacity: 0.3;
+        pointer-events: none;
+    }
+    .bar-container::before { left: 50%; }
+    .bar-container::after  { left: 75%; }
+
+    /* Horizontal axis under bars */
+    .bar-axis {
+        display: flex;
+        justify-content: space-between;
+        font-family: "GDS Transport", Arial, sans-serif;
+        font-size: 16px;
+        margin-top: 8px;
+        color: #0b0c0c;
+        position: relative;
+    }
+    .bar-axis span::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        width: 1px;
+        height: 6px;
+        background: #505a5f;
+        transform: translateX(-50%);
+        opacity: 0.5;
+    }
+
+    /* -------------------------------------------------------
+       INSIGHTS — Side-by-side with fixed left column
+    ------------------------------------------------------- */
+    .insight-row {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        column-gap: 16px;
+        align-items: start;
+        padding: 14px 0;
+    }
+
+    .insight-left {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    /* Pill */
+    .insight-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px 8px 38px;
+        border-radius: 3px;
+        font-family: "GDS Transport", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 1.125rem;
+        position: relative;
+        line-height: 1.35;
+        white-space: nowrap;
+    }
+
+    .insight-pill svg {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        width: 18px;
+        height: 18px;
+        transform: translateY(-50%);
+    }
+
+    /* Pill colours */
+    .insight--increase { background: #c8e7d1; color: #0b0c0c; }
+    .insight--warning  { background: #f9e6b3; color: #0b0c0c; }
+    .insight--decrease { background: #f7c9cf; color: #0b0c0c; }
+    .insight--neutral  { background: #e5e5e5; color: #0b0c0c; }
+
+    /* Arrow colours */
+    .insight--increase svg path { fill: #00703c; }
+    .insight--decrease svg path { fill: #d4351c; }
+    .insight--warning  svg path { fill: #0b0c0c; }
+    .insight--neutral  svg path { fill: #0b0c0c; }
+
+    /* Right-hand insight text */
+    .insight-content {
+        font-family: "GDS Transport", Arial, sans-serif;
+    }
+
+    .insight-title {
+        margin: 0 0 4px 0;
+        font-weight: 700;
+        font-size: 1.1875rem; /* GOV.UK body-m (19px) */
+        line-height: 1.3;
+    }
+
+    .insight-meta {
+        margin: 0;
+        color: #505a5f;
+        font-size: 1.1875rem; /* Match body-m so it’s not too small */
+        line-height: 1.5;
+    }
+
+    /* Stack on very small screens */
+    @media (max-width: 420px) {
+        .insight-row {
+            grid-template-columns: 1fr;
+            row-gap: 8px;
+        }
+    }
+
+    /* -------------------------------------------------------
+       ACTION CARDS — Larger squares, no rounded edges
+    ------------------------------------------------------- */
+    .action-card {
+        display: grid;
+        grid-template-columns: 80px 1fr; /* larger square for icon */
+        column-gap: 20px;
+        padding: 20px 0;
+        align-items: start;
+    }
+
+    .action-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 0;          /* remove rounding */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .action-icon svg {
+        width: 40px;   /* scaled up proportionally */
+        height: 40px;
+    }
+
+    .action-content a {
+        font-family: "GDS Transport", Arial, sans-serif;
+        font-weight: 700;        /* bold */
+        font-size: 1.1875rem;    /* GOV.UK body-m (19px) */
+        line-height: 1.3;
+        text-decoration: underline;
+        color: #1d70b8;
+    }
+
+    .action-description {
+        margin-top: 4px;
+        font-family: "GDS Transport", Arial, sans-serif;
+        font-size: 1.1875rem;    /* GOV.UK body-m (19px) */
+        line-height: 1.45;
+        color: #0b0c0c;           /* standard GOV.UK text colour */
+    }
+
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">Attainment 8</h1>
+
+        <ul class="govuk-list govuk-list--number">
+            <li><a class="govuk-link" href="#analyse">Analyse your data</a></li>
+            <li><a class="govuk-link" href="#interpret">Interpret your data</a></li>
+            <li><a class="govuk-link" href="#improve">Your next steps</a></li>
+        </ul>
+
+        <p>Compare your school’s attainment 8 score against similar schools.</p>
+
+        <div class="govuk-inset-text">
+            Attainment 8 measures pupils’ attainment across 8 qualifications.
+            <a class="govuk-link" href="https://www.gov.uk/government/publications/progress-8-school-performance-measure/secondary-accountability-measures-2025-guidance-for-maintained-secondary-schools-academies-and-free-schools#attainment-8">
+                Learn about Attainment 8
+            </a>.
+        </div>
+
+        <h2 id="analyse" class="govuk-heading-m">1. Analyse your data</h2>
+
+        {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+        {% from "govuk/components/table/macro.njk" import govukTable %}
+
+        {% set pastDayHtml %}
+        <h2 class="govuk-heading-l">3 year average</h2>
+
+        <div class="bar-chart-wrapper">
+            <div class="bar-row">
+                <div class="bar-label">Oak Nest Secondary School</div>
+                <div class="bar-container">
+                    <span class="bar-fill bar-school" style="width:52.2%;"></span>
+                    <span class="bar-text">47</span>
+                </div>
+            </div>
+
+            <div class="bar-row">
+                <div class="bar-label">Similar schools average</div>
+                <div class="bar-container">
+                    <span class="bar-fill bar-soft" style="width:50%;"></span>
+                    <span class="bar-text">45</span>
+                </div>
+            </div>
+
+            <div class="bar-row">
+                <div class="bar-label">Local authority schools average</div>
+                <div class="bar-container">
+                    <span class="bar-fill bar-soft" style="width:44.4%;"></span>
+                    <span class="bar-text">40</span>
+                </div>
+            </div>
+
+            <div class="bar-row">
+                <div class="bar-label">Schools in England average</div>
+                <div class="bar-container">
+                    <span class="bar-fill bar-soft" style="width:50%;"></span>
+                    <span class="bar-text">45</span>
+                </div>
+            </div>
+
+            <!-- AXIS -->
+            <div class="bar-axis">
+                <span>0</span>
+                <span>30</span>
+                <span>60</span>
+                <span>90</span>
+            </div>
+        </div>
+        {% endset %}
+
+        {% set pastWeekHtml %}
+        <h2 class="govuk-heading-l">Past week</h2>
+        {{ govukTable({
+        head: [
+        { text: "Case manager" },
+        { text: "Cases opened" },
+        { text: "Cases closed" }
+        ],
+        rows: [
+        [ { text: "David Francis" }, { text: "24" }, { text: "18" } ],
+        [ { text: "Paul Farmer" }, { text: "16" }, { text: "20" } ],
+        [ { text: "Rita Patel" }, { text: "24" }, { text: "27" } ]
+        ]
+        }) }}
+        {% endset %}
+
+        {% set pastYearHtml %}
+        <h2 class="govuk-heading-l">Past year</h2>
+        {{ govukTable({
+        head: [
+        { text: "Case manager" },
+        { text: "Cases opened" },
+        { text: "Cases closed" }
+        ],
+        rows: [
+        [ { text: "David Francis" }, { text: "1380" }, { text: "1472" } ],
+        [ { text: "Paul Farmer" }, { text: "1129" }, { text: "1083" } ],
+        [ { text: "Rita Patel" }, { text: "1539" }, { text: "1265" } ]
+        ]
+        }) }}
+        {% endset %}
+
+        {{ govukTabs({
+        items: [
+        { label: "3 year average", id: "past-day", panel: { html: pastDayHtml } },
+        { label: "Year by year", id: "past-week", panel: { html: pastWeekHtml } },
+        { label: "Table", id: "past-year", panel: { html: pastYearHtml } }
+        ]
+        }) }}
+
+        <h2 id="interpret" class="govuk-heading-m">2. Interpret your data</h2>
+
+        <p>Your pupils have an attainment 8 score of 47. This is 2 points higher than the average for similar schools.</p>
+
+
+        <!-- WHAT YOU CAN DO NEXT -->
+        <h2 id="improve" class="govuk-heading-m govuk-!-margin-top-7">3. Your next steps</h2>
+
+        <div class="action-card">
+            <div class="action-icon" style="background:#f4d7e5">
+                <svg viewBox="0 0 20 20"><path fill="#7a1e3a" d="M3 3h14v10H6l-3 3V3zm3 4h8v2H6V7zm0-3h8v2H6V4z"/></svg>
+            </div>
+            <div class="action-content">
+                <a href="#">Support a similar school with their attainment</a>
+                <p class="action-description">
+                    Schools like yours are looking for support with their attainment - and there’s always something to learn from one another.
+                </p>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon" style="background:#f9e6b3">
+                <svg viewBox="0 0 20 20"><path fill="#6a4a00" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>
+            </div>
+            <div class="action-content">
+                <a href="#">Explore RISE attainment resources</a>
+                <p class="action-description">
+                    You can find a range a support from conferences, subject-specific hubs and continuing professional development.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
