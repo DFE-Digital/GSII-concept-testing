@@ -1,0 +1,292 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Content page template – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* -------------------------------------------------------
+   ACTION LINK (GOV.UK STYLE WITH PASTELS)
+------------------------------------------------------- */
+.action-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.action-link__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #d7689d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.action-link__icon svg {
+  width: 20px;
+  height: 20px;
+  fill: #ffffff;
+}
+
+.action-link__link {
+  font-family: "GDS Transport", Arial, sans-serif;
+  font-size: 1.1875rem;
+  line-height: 1.3;
+  text-decoration: underline;
+  color: #1d70b8;
+}
+
+/* -------------------------------------------------------
+   KEEP TAG ON ONE LINE
+------------------------------------------------------- */
+.govuk-tag {
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------
+   BAR CHART
+------------------------------------------------------- */
+.bar-chart-wrapper {
+  max-width: 650px;
+  margin-top: 30px;
+}
+
+.bar-row {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.bar-label {
+  font-size: 19px;
+  margin-bottom: 6px;
+  font-family: "GDS Transport", Arial, sans-serif;
+}
+
+.bar-container {
+  background: #f3f2f1;
+  position: relative;
+  height: 40px;
+  border-left: 3px solid #0b0c0c;
+}
+
+.bar-fill {
+  height: 40px;
+  display: block;
+  font-weight: 700;
+  padding-left: 10px;
+  line-height: 40px;
+  color: #0b0c0c;
+  font-family: "GDS Transport", Arial, sans-serif;
+  position: relative;
+  z-index: 1;
+}
+
+.bar-school { background: #8eb8dc; }
+.bar-soft { background: #d2e2f1; }
+
+.bar-text {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  font-weight: 700;
+  color: #0b0c0c;
+  line-height: 40px;
+  font-family: "GDS Transport", Arial, sans-serif;
+  z-index: 2;
+}
+
+.bar-container::before,
+.bar-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid #b1b4b6;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.bar-container::before { left: 50%; }
+.bar-container::after { left: 75%; }
+
+.bar-axis {
+  display: flex;
+  justify-content: space-between;
+  font-family: "GDS Transport", Arial, sans-serif;
+  font-size: 16px;
+  margin-top: 8px;
+  color: #0b0c0c;
+  position: relative;
+}
+
+.bar-axis span::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 1px;
+  height: 6px;
+  background: #505a5f;
+  transform: translateX(-50%);
+  opacity: 0.5;
+}
+
+/* -------------------------------------------------------
+   INSET
+------------------------------------------------------- */
+.attainment-warning {
+  border-left: 9px solid #cecece;
+}
+
+/* -------------------------------------------------------
+   TABS FIXED HEIGHT
+------------------------------------------------------- */
+.fixed-tab-panel {
+  min-height: 420px;
+}
+</style>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-xl">Reading, writing and maths</h1>
+
+    <p>
+      See how well your school is meeting the <a class="govuk-link" href="#">expected standard</a> in reading, writing and maths compared to <a class="govuk-link" href="#">similar schools</a>, and get recommendations about what to do next.
+    </p>
+
+    <h2 id="analyse" class="govuk-heading-m">Analyse your data</h2>
+
+    {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+
+    {% set threeYearAvgHtml %}
+      <div class="fixed-tab-panel">
+        <h2 class="govuk-heading-m">Percentage of all pupils meeting the expected standard</h2>
+
+        <div class="bar-chart-wrapper">
+
+          <div class="bar-row">
+            <div class="bar-label">Oak Nest Primary School</div>
+            <div class="bar-container">
+              <span class="bar-fill bar-school" style="width:52%;"></span>
+              <span class="bar-text">52%</span>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Similar schools average</div>
+            <div class="bar-container">
+              <span class="bar-fill bar-soft" style="width:62%;"></span>
+              <span class="bar-text">62%</span>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Local authority schools average</div>
+            <div class="bar-container">
+              <span class="bar-fill bar-soft" style="width:60%;"></span>
+              <span class="bar-text">60%</span>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Schools in England average</div>
+            <div class="bar-container">
+              <span class="bar-fill bar-soft" style="width:50%;"></span>
+              <span class="bar-text">50%</span>
+            </div>
+          </div>
+
+          <div class="bar-axis">
+            <span>0%</span>
+            <span>25%</span>
+            <span>50%</span>
+            <span>75%</span>
+            <span>100%</span>
+          </div>
+
+        </div>
+      </div>
+    {% endset %}
+
+    {{ govukTabs({
+      items: [
+        {
+          label: "3 year average",
+          id: "three-year-average",
+          panel: { html: threeYearAvgHtml }
+        },
+        {
+          label: "Year by year",
+          id: "year-by-year",
+          panel: { html: "<p>Content coming soon.</p>" }
+        },
+        {
+          label: "Table",
+          id: "table",
+          panel: { html: "<p>Table view coming soon.</p>" }
+        }
+      ]
+    }) }}
+
+    <h2 id="improve" class="govuk-heading-m govuk-!-margin-top-7">Your next steps</h2>
+
+    <div class="govuk-inset-text attainment-warning">
+
+      <p>
+        52% of your pupils are meeting the expected standard in reading, writing and maths. This is 10% below similar schools.
+      </p>
+
+      <!-- ACTION LINKS -->
+      <div class="action-link">
+        <div class="action-link__icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M2 12h14M12 6l6 6-6 6" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <a class="action-link__link" href="https://www.ncetm.org.uk/classroom-resources/cs-school-sees-better-results-through-teaching-for-mastery/">
+          See how Elmhurst School improved maths teaching
+        </a>
+      </div>
+
+      <div class="action-link">
+        <div class="action-link__icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M2 12h14M12 6l6 6-6 6" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <a class="action-link__link" href="https://englishhubs.net/">
+          Get support from your local English hub
+        </a>
+      </div>
+
+      <div class="action-link">
+        <div class="action-link__icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M2 12h14M12 6l6 6-6 6" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <a class="action-link__link" href="https://educationendowmentfoundation.org.uk/education-evidence/guidance-reports/primary-science-ks1-ks2">
+          Improve primary science
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
