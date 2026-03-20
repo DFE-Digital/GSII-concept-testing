@@ -1,0 +1,295 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Content page template – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* -------------------------------------------------------
+   BAR CHART
+------------------------------------------------------- */
+.bar-chart-wrapper {
+  max-width: 650px;
+  margin-top: 30px;
+}
+
+.bar-row {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.bar-label {
+  font-size: 19px;
+  margin-bottom: 6px;
+  font-family: "GDS Transport", Arial, sans-serif;
+}
+
+.bar-container {
+  background: #f3f2f1;
+  position: relative;
+  height: 40px;
+  border-left: 3px solid #0b0c0c;
+}
+
+.bar-fill {
+  height: 40px;
+  display: block;
+  font-weight: 700;
+  padding-left: 10px;
+  line-height: 40px;
+  color: #0b0c0c;
+  font-family: "GDS Transport", Arial, sans-serif;
+  position: relative;
+  z-index: 1;
+}
+
+.bar-school {
+  background: #ca357c;
+}
+
+.bar-soft {
+  background: 	#16548a;
+}
+
+.bar-text {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  font-weight: 700;
+  color: #0b0c0c;
+  line-height: 40px;
+  font-family: "GDS Transport", Arial, sans-serif;
+  z-index: 2;
+}
+
+.bar-container::before,
+.bar-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid #b1b4b6;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.bar-container::before { left: 50%; }
+.bar-container::after { left: 75%; }
+
+.bar-axis {
+  display: flex;
+  justify-content: space-between;
+  font-family: "GDS Transport", Arial, sans-serif;
+  font-size: 16px;
+  margin-top: 8px;
+  color: #0b0c0c;
+  position: relative;
+}
+
+.bar-axis span::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 1px;
+  height: 6px;
+  background: #505a5f;
+  transform: translateX(-50%);
+  opacity: 0.5;
+}
+
+/* -------------------------------------------------------
+   PERFORMANCE INSIGHT CARD (MATCH MOCK)
+------------------------------------------------------- */
+body {
+  background-color: #f3f2f1; /* light grey page background */
+}
+
+.app-performance-card {
+  border: 1px solid #d8d8d8;
+  padding: 24px;
+  margin-top: 40px;
+  background: #ffffff;
+  max-width: 640px;
+}
+
+.app-performance-card__title {
+  border-bottom: 1px solid #b1b4b6;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+.app-performance-card__metric {
+  margin-top: 10px;
+}
+
+.app-performance-card__value {
+  font-size: 3.2rem;
+  line-height: 1;
+  font-weight: 700;
+  color: 	#16548a;
+  margin: 8px 0 8px 0;
+}
+
+.app-performance-card__inset {
+  background-color: #f3f2f1;
+  padding: 16px;
+  margin: 20px 0;
+}
+</style>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-xl">Attainment 8</h1>
+
+    <p class="govuk-body-l govuk-!-margin-bottom-9">
+      Compare your school’s
+      <a class="govuk-link" href="https://www.gov.uk/government/publications/progress-8-school-performance-measure/secondary-accountability-measures-2025-guidance-for-maintained-secondary-schools-academies-and-free-schools#attainment-8">Attainment 8</a>
+      score against <a class="govuk-link" href="#">similar schools</a>.
+    </p>
+
+    {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+    {% from "govuk/components/table/macro.njk" import govukTable %}
+
+    {% set pastDayHtml %}
+      <div class="fixed-tab-panel">
+        <h2 class="govuk-heading-m">Attainment 8 score across all pupils</h2>
+
+        <div class="bar-chart-wrapper">
+
+          <div class="bar-row">
+            <div class="bar-label">Oak Nest Secondary School</div>
+            <div class="bar-container">
+              <span class="bar-fill bar-school" style="width:50%;"></span>
+              <span class="bar-text">45</span>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Similar schools average</div>
+            <div class="bar-container">
+              <span class="bar-fill bar-soft" style="width:52.2%;"></span>
+              <span class="bar-text">47</span>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Local authority schools average</div>
+            <div class="bar-container">
+              <span class="bar-fill bar-soft" style="width:44.4%;"></span>
+              <span class="bar-text">40</span>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Schools in England average</div>
+            <div class="bar-container">
+              <span class="bar-fill bar-soft" style="width:50%;"></span>
+              <span class="bar-text">45</span>
+            </div>
+          </div>
+
+          <div class="bar-axis">
+            <span>0</span>
+            <span>30</span>
+            <span>60</span>
+            <span>90</span>
+          </div>
+
+        </div>
+      </div>
+    {% endset %}
+
+    {% set yearByYearHtml %}
+      <div class="fixed-tab-panel">
+        <p class="govuk-body">Content coming soon.</p>
+      </div>
+    {% endset %}
+
+    {% set tableHtml %}
+      <div class="fixed-tab-panel">
+        <p class="govuk-body">Table view coming soon.</p>
+      </div>
+    {% endset %}
+
+    {{ govukTabs({
+      items: [
+        {
+          label: "3 year average",
+          id: "past-day",
+          panel: { html: pastDayHtml }
+        },
+        {
+          label: "Year by year",
+          id: "year-by-year",
+          panel: { html: yearByYearHtml }
+        },
+        {
+          label: "Table",
+          id: "table",
+          panel: { html: tableHtml }
+        }
+      ]
+    }) }}
+
+    <!-- PERFORMANCE INSIGHT CARD -->
+<section class="app-performance-card" aria-labelledby="performance-insight-title">
+
+  <div class="app-performance-card__title">
+    <h2 id="performance-insight-title" class="govuk-heading-m govuk-!-margin-bottom-0">
+      Performance insight
+    </h2>
+  </div>
+
+  <div class="app-performance-card__metric">
+    <p class="govuk-body govuk-!-margin-bottom-1">
+      Compared with similar schools
+    </p>
+
+    <p class="app-performance-card__value">
+      -2
+    </p>
+
+    <p class="govuk-body govuk-!-margin-bottom-0">
+      Your attainment 8 score is slightly below similar schools.
+    </p>
+  </div>
+
+  <div class="app-performance-card__inset">
+    <p class="govuk-body govuk-!-margin-bottom-0">
+      The score difference is most prevalent when you compare boys’ attainment 8 score with similar schools.
+    </p>
+  </div>
+
+  <p class="govuk-body govuk-!-margin-bottom-2">
+    <a href="#" class="govuk-link">
+      Browse conferences, search for continuing professional development and get subject-specific support
+    </a>
+  </p>
+  <p class="govuk-body govuk-!-margin-bottom-2">
+    <a href="#" class="govuk-link">
+      Use the EEF teaching and learning toolkit
+    </a>
+  </p>
+  <p class="govuk-body govuk-!-margin-bottom-2">
+    <a href="#" class="govuk-link">
+      Get support from your local maths hub
+    </a>
+  </p>
+
+</section>
+
+  </div>
+</div>
+
+{% endblock %}
