@@ -4,3 +4,52 @@
 // 
 
 // Add extra styles here
+
+.side-nav__heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #505a5f;
+  margin-bottom: 10px;
+  margin-top: 0;
+  padding-left: 15px; /* ⭐ aligns with nav items */
+  text-transform: none; /* or uppercase if you want */
+}
+
+
+.side-nav__heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #505a5f;
+  margin-bottom: 10px;
+  margin-top: 0;
+  padding-left: 0;
+}
+
+.side-nav {
+  margin-top: 20px;
+}
+
+.side-nav__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-nav__item {
+  margin-bottom: 5px;
+}
+
+.side-nav__link {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #1d70b8; // GOV.UK blue
+}
+
+.side-nav__item--active .side-nav__link {
+  background: #f3f2f1; // light grey
+  border-left: 4px solid #1d70b8;
+  padding-left: 11px; // compensate for border
+  font-weight: bold;
+  color: #0b0c0c;
+}

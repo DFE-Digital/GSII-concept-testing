@@ -1,0 +1,190 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Content page template – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  <!-- LEFT COLUMN: SIDE NAV -->
+  <div class="govuk-grid-column-one-quarter">
+
+    <p class="side-nav__heading govuk-!-margin-left-3">KS4 headline measures</p>
+
+    <nav class="side-nav">
+      <ul class="side-nav__list">
+        <li class="side-nav__item side-nav__item--active">
+          <a href="#" data-section="section-1" class="side-nav__link">Attainment 8</a>
+        </li>
+        <li class="side-nav__item">
+          <a href="#" data-section="section-2" class="side-nav__link">English and maths GCSE</a>
+        </li>
+        <li class="side-nav__item">
+          <a href="#" data-section="section-3" class="side-nav__link">Staying in education or entering employment</a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <!-- RIGHT COLUMN: MAIN CONTENT -->
+  <div class="govuk-grid-column-three-quarters">
+
+    <style>
+      /* Keep all your original CSS here exactly as before */
+      .action-link { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
+      .action-link__icon { background-color: #e59abe; color: #0b0c0c; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+      .action-link__icon svg { width: 18px; height: 18px; fill: #0b0c0c; }
+      .action-link__text { font-family: "GDS Transport", Arial, sans-serif; font-size: 1.1875rem; font-weight: 400; line-height: 1.3; }
+      .bar-chart-wrapper { max-width: 650px; margin-top: 30px; }
+      .bar-row { margin-bottom: 24px; position: relative; }
+      .bar-label { font-size: 19px; margin-bottom: 6px; font-family: "GDS Transport", Arial, sans-serif; }
+      .bar-container { background: #f3f2f1; position: relative; height: 40px; border-left: 3px solid #0b0c0c; }
+      .bar-fill { height: 40px; display: block; font-weight: 700; padding-left: 10px; line-height: 40px; color: #0b0c0c; font-family: "GDS Transport", Arial, sans-serif; position: relative; z-index: 1; }
+      .bar-school { background: #8eb8dc; }
+      .bar-soft { background: #d2e2f1; }
+      .bar-text { position: absolute; right: 10px; top: 0; font-weight: 700; color: #0b0c0c; line-height: 40px; font-family: "GDS Transport", Arial, sans-serif; z-index: 2; }
+      .bar-container::before, .bar-container::after { content: ""; position: absolute; top: 0; bottom: 0; border-left: 1px solid #b1b4b6; opacity: 0.3; pointer-events: none; }
+      .bar-container::before { left: 50%; } .bar-container::after { left: 75%; }
+      .bar-axis { display: flex; justify-content: space-between; font-family: "GDS Transport", Arial, sans-serif; font-size: 16px; margin-top: 8px; color: #0b0c0c; position: relative; }
+      .bar-axis span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 6px; background: #505a5f; transform: translateX(-50%); opacity: 0.5; }
+      .attainment-warning { border-left: 9px solid #cecece; padding: 10px; }
+      .action-card { display: grid; grid-template-columns: 80px 1fr; column-gap: 20px; padding: 20px 0; align-items: start; }
+      .action-icon { width: 80px; height: 80px; display: flex; justify-content: center; align-items: center; }
+      .action-icon svg { width: 40px; height: 40px; }
+      .action-content a { font-family: "GDS Transport", Arial, sans-serif; font-weight: 700; font-size: 1.1875rem; line-height: 1.3; text-decoration: underline; color: #1d70b8; }
+      .action-description { margin-top: 4px; font-family: "GDS Transport", Arial, sans-serif; font-size: 1.1875rem; line-height: 1.45; color: #0b0c0c; }
+      .fixed-tab-panel { min-height: 420px; }
+    </style>
+
+    <!-- SECTION 1: Attainment 8 -->
+    <div id="section-1" class="side-section">
+
+      <h1 class="govuk-heading-xl">Attainment 8</h1>
+
+      <p>
+        Compare your school’s
+        <a class="govuk-link" href="https://www.gov.uk/government/publications/progress-8-school-performance-measure/secondary-accountability-measures-2025-guidance-for-maintained-secondary-schools-academies-and-free-schools#attainment-8">Attainment 8</a>
+        score against <a class="govuk-link" href="#">similar schools</a>, and get recommendations about what to do next.
+      </p>
+
+      <h2 id="analyse" class="govuk-heading-m">Analyse your data</h2>
+
+      {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+      {% from "govuk/components/table/macro.njk" import govukTable %}
+
+      {% set pastDayHtml %}
+        <div class="fixed-tab-panel">
+          <h2 class="govuk-heading-m">Attainment 8 score across all pupils</h2>
+          <div class="bar-chart-wrapper">
+            <div class="bar-row"><div class="bar-label">Oak Nest Secondary School</div><div class="bar-container"><span class="bar-fill bar-school" style="width:50%;"></span><span class="bar-text">45</span></div></div>
+            <div class="bar-row"><div class="bar-label">Similar schools average</div><div class="bar-container"><span class="bar-fill bar-soft" style="width:52.2%;"></span><span class="bar-text">47</span></div></div>
+            <div class="bar-row"><div class="bar-label">Local authority schools average</div><div class="bar-container"><span class="bar-fill bar-soft" style="width:44.4%;"></span><span class="bar-text">40</span></div></div>
+            <div class="bar-row"><div class="bar-label">Schools in England average</div><div class="bar-container"><span class="bar-fill bar-soft" style="width:50%;"></span><span class="bar-text">45</span></div></div>
+            <div class="bar-axis"><span>0</span><span>30</span><span>60</span><span>90</span></div>
+          </div>
+        </div>
+      {% endset %}
+
+      {% set yearByYearHtml %}<div class="fixed-tab-panel"><p class="govuk-body">Content coming soon.</p></div>{% endset %}
+      {% set tableHtml %}<div class="fixed-tab-panel"><p class="govuk-body">Table view coming soon.</p></div>{% endset %}
+
+      {{ govukTabs({
+        items: [
+          { label: "3 year average", id: "past-day", panel: { html: pastDayHtml } },
+          { label: "Year by year", id: "year-by-year", panel: { html: yearByYearHtml } },
+          { label: "Table", id: "table", panel: { html: tableHtml } }
+        ]
+      }) }}
+
+      <h2 id="improve" class="govuk-heading-m govuk-!-margin-top-7">Your next steps</h2>
+
+      <div class="govuk-inset-text attainment-warning">
+        <p>Your Attainment 8 score is 45. This is 2 points lower than the average for similar schools.</p>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon" style="background:#f9e6b3">
+          <svg viewBox="0 0 20 20"><path fill="#6a4a00" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>
+        </div>
+        <div class="action-content">
+          <a href="https://www.gov.uk/government/publications/rise-support-for-improving-attainment-in-schools/rise-attainment-improvement">
+            Explore RISE attainment resources
+          </a>
+          <p class="action-description">
+            Browse conferences, search for continuing professional development and get subject-specific support.
+          </p>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon" style="background:#ddd6ec">
+          <svg viewBox="0 0 20 20"><path fill="#4c2c92" d="M10 2a8 8 0 110 16 8 8 0 010-16zm1 11V8H9v5h2zm0-7V5H9v1h2z"/></svg>
+        </div>
+        <div class="action-content">
+          <a href="https://www.ncetm.org.uk/maths-hubs/find-your-hub/">Get support from your local maths hub</a>
+          <p class="action-description">
+            Maths hubs can help improve teaching through professional development and evidence-based practice.
+          </p>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon" style="background:#f4d7e5">
+          <svg viewBox="0 0 20 20"><path fill="#7a1e3a" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>
+        </div>
+        <div class="action-content">
+          <a href="https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit">
+            Use the EEF teaching and learning toolkit
+          </a>
+          <p class="action-description">
+            A resource from the Education Endowment Foundation for teachers and school leaders who are making decisions about how to improve learning outcomes.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 2: English & Maths GCSE -->
+    <div id="section-2" class="side-section" style="display:none">
+      <h1 class="govuk-heading-xl">English and maths GCSE</h1>
+      <p>Content for English and maths GCSE goes here.</p>
+    </div>
+
+    <!-- SECTION 3: Staying in education/employment -->
+    <div id="section-3" class="side-section" style="display:none">
+      <h1 class="govuk-heading-xl">Staying in education or entering employment</h1>
+      <p>Content for staying in education or entering employment goes here.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // Side nav section toggle
+  const navLinks = document.querySelectorAll('.side-nav__link');
+  const sections = document.querySelectorAll('.side-section');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = link.dataset.section;
+      sections.forEach(sec => sec.style.display = 'none');
+      document.getElementById(target).style.display = 'block';
+      navLinks.forEach(l => l.parentElement.classList.remove('side-nav__item--active'));
+      link.parentElement.classList.add('side-nav__item--active');
+    });
+  });
+</script>
+
+{% endblock %}
