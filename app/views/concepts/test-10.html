@@ -1,0 +1,273 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Reading, writing and maths – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block containerStart %}
+{{ govukBackLink({
+text: "Back",
+href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* -------------------------------------------------------
+       BAR CHART (UNCHANGED)
+    ------------------------------------------------------- */
+    .bar-chart-wrapper {
+        max-width: 650px;
+        margin-top: 30px;
+    }
+
+    .bar-row {
+        margin-bottom: 24px;
+        position: relative;
+    }
+
+    .bar-label {
+        font-size: 19px;
+        margin-bottom: 6px;
+        font-family: "GDS Transport", Arial, sans-serif;
+    }
+
+    .bar-container {
+        background: #f3f2f1;
+        position: relative;
+        height: 40px;
+        border-left: 3px solid #0b0c0c;
+    }
+
+    .bar-fill {
+        height: 40px;
+        display: block;
+        font-weight: 700;
+        padding-left: 10px;
+        line-height: 40px;
+        color: #0b0c0c;
+        font-family: "GDS Transport", Arial, sans-serif;
+        position: relative;
+        z-index: 1;
+    }
+
+    .bar-school {
+        background: #ca357c;
+    }
+
+    .bar-soft {
+        background: #16548a;
+    }
+
+    .bar-text {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        font-weight: 700;
+        color: #0b0c0c;
+        line-height: 40px;
+        font-family: "GDS Transport", Arial, sans-serif;
+        z-index: 2;
+    }
+
+    .bar-container::before,
+    .bar-container::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        border-left: 1px solid #b1b4b6;
+        opacity: 0.3;
+    }
+
+    .bar-container::before { left: 50%; }
+    .bar-container::after { left: 75%; }
+
+    .bar-axis {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        margin-top: 8px;
+    }
+
+    /* -------------------------------------------------------
+       PERFORMANCE INSIGHT CARD (REFINED)
+    ------------------------------------------------------- */
+    .app-performance-card {
+        border: 1px solid #d8d8d8;
+        padding: 24px;
+        margin-top: 40px;
+        background: #ffffff;
+        max-width: 650px;
+    }
+
+    .app-performance-card__title {
+        border-bottom: 1px solid #b1b4b6;
+        padding-bottom: 10px;
+        margin-bottom: 16px;
+    }
+
+    .app-performance-card__value {
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: #16548a;
+        margin: 8px 0;
+    }
+
+    .app-performance-card__inset {
+        background-color: #f3f2f1;
+        padding: 14px 16px;
+        margin: 18px 0;
+    }
+
+    /* -------------------------------------------------------
+       TABS
+    ------------------------------------------------------- */
+    .fixed-tab-panel {
+        min-height: 420px;
+    }
+
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">Reading, writing and maths</h1>
+
+        <p class="govuk-body-l govuk-!-margin-bottom-7">
+            See how well your school is meeting the
+            <a class="govuk-link" href="#">expected standard</a>
+            in reading, writing and maths compared to
+            <a class="govuk-link" href="#">similar schools</a>.
+        </p>
+
+        <h2 class="govuk-heading-m">Analyse your data</h2>
+
+        {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+
+        {% set threeYearAvgHtml %}
+        <div class="fixed-tab-panel">
+
+            <h2 class="govuk-heading-m">
+                Percentage of pupils meeting the expected standard
+            </h2>
+
+            <div class="bar-chart-wrapper">
+
+                <div class="bar-row">
+                    <div class="bar-label">Oak Nest Primary School</div>
+                    <div class="bar-container">
+                        <span class="bar-fill bar-school" style="width:52%;"></span>
+                        <span class="bar-text">52%</span>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <div class="bar-label">Similar schools average</div>
+                    <div class="bar-container">
+                        <span class="bar-fill bar-soft" style="width:62%;"></span>
+                        <span class="bar-text">62%</span>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <div class="bar-label">Local authority schools average</div>
+                    <div class="bar-container">
+                        <span class="bar-fill bar-soft" style="width:60%;"></span>
+                        <span class="bar-text">60%</span>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <div class="bar-label">Schools in England average</div>
+                    <div class="bar-container">
+                        <span class="bar-fill bar-soft" style="width:50%;"></span>
+                        <span class="bar-text">50%</span>
+                    </div>
+                </div>
+
+                <div class="bar-axis">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
+                </div>
+
+            </div>
+        </div>
+        {% endset %}
+
+        {% set yearByYearHtml %}
+        <div class="fixed-tab-panel">
+            <p class="govuk-body">Content coming soon.</p>
+        </div>
+        {% endset %}
+
+        {% set tableHtml %}
+        <div class="fixed-tab-panel">
+            <p class="govuk-body">Table view coming soon.</p>
+        </div>
+        {% endset %}
+
+        {{ govukTabs({
+        items: [
+        {
+        label: "3 year average",
+        id: "three-year-average",
+        panel: { html: threeYearAvgHtml }
+        },
+        {
+        label: "Year by year",
+        id: "year-by-year",
+        panel: { html: yearByYearHtml }
+        },
+        {
+        label: "Table",
+        id: "table",
+        panel: { html: tableHtml }
+        }
+        ]
+        }) }}
+
+        <!-- PERFORMANCE INSIGHT CARD -->
+        <section class="app-performance-card" aria-labelledby="performance-insight-title">
+
+            <div class="app-performance-card__title">
+                <h2 id="performance-insight-title" class="govuk-heading-m govuk-!-margin-bottom-0">
+                    Performance insight
+                </h2>
+            </div>
+
+            <p class="govuk-body govuk-!-margin-bottom-1">
+                Compared with similar schools
+            </p>
+
+            <p class="app-performance-card__value">
+                -10%
+            </p>
+
+            <p class="govuk-body">
+                Fewer of your pupils are meeting the expected standard in reading, writing and maths compared to similar schools.
+            </p>
+
+            <div class="app-performance-card__inset">
+                <p class="govuk-body govuk-!-margin-bottom-0">
+                    The score difference is most prevalent in reading, where your school is 12% below similar schools.
+                </p>
+            </div>
+
+            <p class="govuk-body govuk-!-margin-bottom-0">
+                <a href="#" class="govuk-link">
+                    View guidance on improving reading, writing and maths
+                </a>
+            </p>
+
+        </section>
+
+    </div>
+</div>
+
+{% endblock %}
