@@ -1,0 +1,244 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  KS4 headline measures – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({ text: "Back", href: "javascript:window.history.back()" }) }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+  /* -----------------------------
+     Secondary navigation
+  ----------------------------- */
+  .app-secondary-nav {
+    border-bottom: 1px solid #b1b4b6;
+    margin-bottom: 30px;
+  }
+  .app-secondary-nav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 25px;
+  }
+  .app-secondary-nav__link {
+    display: inline-block;
+    padding: 10px 0;
+    text-decoration: none;
+    font-family: "GDS Transport", Arial, sans-serif;
+    font-size: 1.1875rem;
+    color: #1d70b8;
+  }
+  .app-secondary-nav__item--active .app-secondary-nav__link {
+    font-weight: 700;
+    color: #0b0c0c;
+    border-bottom: 4px solid #1d70b8;
+  }
+
+  /* -----------------------------
+     Main + sidebar layout
+  ----------------------------- */
+  .main-content { width: 60%; float: left; }
+  .sidebar { width: 40%; float: left; padding-left: 20px; box-sizing: border-box; }
+
+  /* -----------------------------
+     Bar chart
+  ----------------------------- */
+  .bar-chart-wrapper { max-width: 100%; margin-top: 30px; }
+  .bar-row { margin-bottom: 24px; position: relative; }
+  .bar-label { font-size: 19px; margin-bottom: 6px; font-family: "GDS Transport", Arial, sans-serif; }
+  .bar-container { background: #f3f2f1; position: relative; height: 40px; border-left: 3px solid #0b0c0c; }
+  .bar-fill { height: 40px; display: block; font-weight: 700; padding-left: 10px; line-height: 40px; color: #0b0c0c; font-family: "GDS Transport", Arial, sans-serif; position: relative; z-index: 1; }
+  .bar-school { background: #8eb8dc; }
+  .bar-soft { background: #d2e2f1; }
+  .bar-text { position: absolute; right: 10px; top: 0; font-weight: 700; color: #0b0c0c; line-height: 40px; font-family: "GDS Transport", Arial, sans-serif; z-index: 2; }
+  .bar-container::before, .bar-container::after { content: ""; position: absolute; top: 0; bottom: 0; border-left: 1px solid #b1b4b6; opacity: 0.3; pointer-events: none; }
+  .bar-container::before { left: 50%; }
+  .bar-container::after { left: 75%; }
+  .bar-axis { display: flex; justify-content: space-between; font-family: "GDS Transport", Arial, sans-serif; font-size: 16px; margin-top: 8px; color: #0b0c0c; position: relative; }
+  .bar-axis span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 6px; background: #505a5f; transform: translateX(-50%); opacity: 0.5; }
+
+  /* -----------------------------
+     Performance insight card
+  ----------------------------- */
+  .app-performance-card { border: 1px solid #d8d8d8; padding: 20px; background: #ffffff; margin-top: 30px; }
+  .app-performance-card__value { font-size: 2.8rem; font-weight: 700; color: #16548a; margin: 10px 0; }
+  .app-performance-card__inset { background-color: #f3f2f1; padding: 12px; margin: 15px 0; }
+
+  /* -----------------------------
+     Related content (sidebar)
+  ----------------------------- */
+  .action-card {
+    display: grid;
+    grid-template-columns: 60px 1fr; /* smaller icon */
+    column-gap: 15px; /* closer together */
+    padding: 10px 0; /* reduced vertical padding */
+    align-items: start;
+  }
+  .action-card + .action-card { margin-top: 5px; } /* smaller gap between cards */
+  .action-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0; /* sharp edges */
+  }
+  .action-icon svg { width: 30px; height: 30px; }
+  .action-content a {
+    font-family: "GDS Transport", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1.1875rem;
+    line-height: 1.3;
+    text-decoration: underline;
+    color: #1d70b8;
+  }
+  .action-description {
+    margin-top: 2px; /* smaller gap below title */
+    font-family: "GDS Transport", Arial, sans-serif;
+    font-size: 1.1875rem;
+    line-height: 1.35;
+    color: #0b0c0c;
+  }
+
+  /* Clear floats */
+  .clearfix::after { content: ""; display: table; clear: both; }
+</style>
+
+<h1 class="govuk-heading-xl">KS4 headline measures</h1>
+
+<p class="govuk-body">
+  View and explore key stage 4 performance measures for your school, including attainment and progression outcomes.
+</p>
+
+<!-- SECONDARY NAV -->
+<nav class="app-secondary-nav">
+  <ul class="app-secondary-nav__list">
+    <li class="app-secondary-nav__item app-secondary-nav__item--active">
+      <a href="#" data-section="section-1" class="app-secondary-nav__link">Attainment 8</a>
+    </li>
+    <li class="app-secondary-nav__item">
+      <a href="#" data-section="section-2" class="app-secondary-nav__link">English and maths GCSE</a>
+    </li>
+    <li class="app-secondary-nav__item">
+      <a href="#" data-section="section-3" class="app-secondary-nav__link">Staying in education or entering employment</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="clearfix">
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+
+    {% set pastDayHtml %}
+      <div class="fixed-tab-panel">
+        <div class="bar-chart-wrapper">
+          <div class="bar-row">
+            <div class="bar-label">Oak Nest Secondary School</div>
+            <div class="bar-container"><span class="bar-fill bar-school" style="width:50%;"></span><span class="bar-text">45</span></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Similar schools average</div>
+            <div class="bar-container"><span class="bar-fill bar-soft" style="width:52.2%;"></span><span class="bar-text">47</span></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Local authority schools average</div>
+            <div class="bar-container"><span class="bar-fill bar-soft" style="width:44.4%;"></span><span class="bar-text">40</span></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Schools in England average</div>
+            <div class="bar-container"><span class="bar-fill bar-soft" style="width:50%;"></span><span class="bar-text">45</span></div>
+          </div>
+          <div class="bar-axis"><span>0</span><span>30</span><span>60</span><span>90</span></div>
+        </div>
+      </div>
+    {% endset %}
+
+    {% set yearByYearHtml %}<div class="fixed-tab-panel"><p class="govuk-body">Content coming soon.</p></div>{% endset %}
+    {% set tableHtml %}<div class="fixed-tab-panel"><p class="govuk-body">Table view coming soon.</p></div>{% endset %}
+
+    {{ govukTabs({
+      items: [
+        { label: "3 year average", panel: { html: pastDayHtml } },
+        { label: "Year by year", panel: { html: yearByYearHtml } },
+        { label: "Table", panel: { html: tableHtml } }
+      ]
+    }) }}
+
+    <section class="app-performance-card">
+      <h3 class="govuk-heading-s">Performance insight</h3>
+      <p class="govuk-body">Compared with similar schools</p>
+      <p class="app-performance-card__value">-2</p>
+      <p class="govuk-body">Your Attainment 8 score is slightly below similar schools.</p>
+      <div class="app-performance-card__inset">
+        <p class="govuk-body govuk-!-margin-bottom-0">
+          The score difference is most prevalent when you compare boys’ attainment 8 score with similar schools.
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h3 class="govuk-heading-s">Your next steps</h3>
+
+    <div class="action-card">
+      <div class="action-icon" style="background:#f9e6b3">
+        <svg viewBox="0 0 20 20"><path fill="#6a4a00" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>
+      </div>
+      <div class="action-content">
+        <a href="#">Explore RISE attainment resources</a>
+        <p class="action-description">Browse conferences, professional development, or contact hubs for support.</p>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon" style="background:#ddd6ec">
+        <svg viewBox="0 0 20 20"><path fill="#4c2c92" d="M10 2a8 8 0 110 16 8 8 0 010-16zm1 11V8H9v5h2zm0-7V5H9v1h2z"/></svg>
+      </div>
+      <div class="action-content">
+        <a href="#">Get support from your local maths hub</a>
+        <p class="action-description">Maths hubs help improve teaching through professional development and evidence-based practice.</p>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon" style="background:#f4d7e5">
+        <svg viewBox="0 0 20 20"><path fill="#7a1e3a" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>
+      </div>
+      <div class="action-content">
+        <a href="#">Improve literacy in secondary schools</a>
+        <p class="action-description">Read the EEF’s guidance on improving literacy in all subject areas.</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // Secondary nav functionality
+  const navLinks = document.querySelectorAll('.app-secondary-nav__link');
+  const sections = document.querySelectorAll('.side-section');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = link.dataset.section;
+      sections.forEach(sec => sec.style.display = 'none');
+      document.getElementById(target).style.display = 'block';
+      navLinks.forEach(l => l.parentElement.classList.remove('app-secondary-nav__item--active'));
+      link.parentElement.classList.add('app-secondary-nav__item--active');
+    });
+  });
+</script>
+
+{% endblock %}
