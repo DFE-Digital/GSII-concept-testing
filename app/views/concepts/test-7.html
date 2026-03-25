@@ -52,21 +52,38 @@
 /* -------------------------------------------------------
    BAR CHART
 ------------------------------------------------------- */
+
+/* Filters + graph wrapper */
+/* Filters + graph wrapper */
+.data-grouping {
+  background-color: #f4f8fb; /* Light blue behind filters + tabs */
+  padding: 20px 20px 1px 20px; /* top | right | bottom | left */
+  border-radius: 4px;
+  max-width: 650px;
+}
+
+/* Override GOV.UK tabs panel so it stays white */
+.govuk-tabs__panel {
+  background-color: #ffffff !important;
+  border: 1px solid #d0d0d0;
+  padding: 24px;
+  border-radius: 4px;
+}
+
+/* Padding between filters and graph */
+.filters-container {
+  margin-bottom: 10px;
+}
+
+/* Graph styles */
 .bar-chart-wrapper {
   max-width: 650px;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
-.bar-row {
-  margin-bottom: 24px;
-  position: relative;
-}
+.bar-row { margin-bottom: 24px; position: relative; }
 
-.bar-label {
-  font-size: 19px;
-  margin-bottom: 6px;
-  font-family: "GDS Transport", Arial, sans-serif;
-}
+.bar-label { font-size: 19px; margin-bottom: 6px; font-family: "GDS Transport", Arial, sans-serif; }
 
 .bar-container {
   background: #f3f2f1;
@@ -75,72 +92,20 @@
   border-left: 3px solid #0b0c0c;
 }
 
-.bar-fill {
-  height: 40px;
-  display: block;
-  font-weight: 700;
-  padding-left: 10px;
-  line-height: 40px;
-  color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
-  position: relative;
-  z-index: 1;
-}
+.bar-fill { height: 40px; display: block; font-weight: 700; padding-left: 10px; line-height: 40px; color: #0b0c0c; font-family: "GDS Transport", Arial, sans-serif; position: relative; z-index: 1; }
 
-.bar-school {
-  background: #8eb8dc;
-}
+.bar-school { background: #8eb8dc; }
+.bar-soft { background: #d2e2f1; }
 
-.bar-soft {
-  background: #d2e2f1;
-}
-
-.bar-text {
-  position: absolute;
-  right: 10px;
-  top: 0;
-  font-weight: 700;
-  color: #0b0c0c;
-  line-height: 40px;
-  font-family: "GDS Transport", Arial, sans-serif;
-  z-index: 2;
-}
+.bar-text { position: absolute; right: 10px; top: 0; font-weight: 700; color: #0b0c0c; line-height: 40px; font-family: "GDS Transport", Arial, sans-serif; z-index: 2; }
 
 .bar-container::before,
-.bar-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  border-left: 1px solid #b1b4b6;
-  opacity: 0.3;
-  pointer-events: none;
-}
-
+.bar-container::after { content: ""; position: absolute; top: 0; bottom: 0; border-left: 1px solid #b1b4b6; opacity: 0.3; pointer-events: none; }
 .bar-container::before { left: 50%; }
 .bar-container::after { left: 75%; }
 
-.bar-axis {
-  display: flex;
-  justify-content: space-between;
-  font-family: "GDS Transport", Arial, sans-serif;
-  font-size: 16px;
-  margin-top: 8px;
-  color: #0b0c0c;
-  position: relative;
-}
-
-.bar-axis span::before {
-  content: "";
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  width: 1px;
-  height: 6px;
-  background: #505a5f;
-  transform: translateX(-50%);
-  opacity: 0.5;
-}
+.bar-axis { display: flex; justify-content: space-between; font-family: "GDS Transport", Arial, sans-serif; font-size: 16px; margin-top: 8px; color: #0b0c0c; position: relative; }
+.bar-axis span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 6px; background: #505a5f; transform: translateX(-50%); opacity: 0.5; }
 
 /* -------------------------------------------------------
    ATTAINMENT WARNING INSET
@@ -171,7 +136,13 @@
 .action-icon svg {
   width: 40px;
   height: 40px;
+  fill: currentColor;
 }
+
+/* Restore icon colors explicitly */
+.action-icon[style*="background:#f9e6b3"] svg { fill: #6a4a00; }
+.action-icon[style*="background:#ddd6ec"] svg { fill: #4c2c92; }
+.action-icon[style*="background:#f4d7e5"] svg { fill: #7a1e3a; }
 
 .action-content a {
   font-family: "GDS Transport", Arial, sans-serif;
@@ -194,7 +165,10 @@
    TABS FIXED HEIGHT (stop page jumping)
 ------------------------------------------------------- */
 .fixed-tab-panel {
-  min-height: 420px; /* Adjust as needed to fit your tallest panel */
+  min-height: 420px;
+  background-color: #ffffff; /* Graph remains white */
+  padding: 20px;
+  border-radius: 4px;
 }
 </style>
 
@@ -209,93 +183,140 @@
 
     <h2 id="analyse" class="govuk-heading-m">Analyse your data</h2>
 
-    {% from "govuk/components/tabs/macro.njk" import govukTabs %}
-    {% from "govuk/components/table/macro.njk" import govukTable %}
+    <div class="data-grouping">
 
-    {# Primary tab content (existing chart) #}
-    {% set threeYearAvgHtml %}
-      <div class="fixed-tab-panel">
-        <h2 class="govuk-heading-m">Percentage of all pupils meeting the expected standard</h2>
+      {# === GOV.UK STYLE CAPTION ABOVE FILTERS + CHART === #}
+      <p class="govuk-caption-m govuk-!-margin-bottom-4">
+        Percentage of pupils meeting the expected standard
+      </p>
 
-        <div class="bar-chart-wrapper">
-
-          <div class="bar-row">
-            <div class="bar-label">Oak Nest Primary School</div>
-            <div class="bar-container">
-              <span class="bar-fill bar-school" style="width:52%;"></span>
-              <span class="bar-text">52%</span>
-            </div>
+      {# === FILTERS ONLY === #}
+      {% from "govuk/components/select/macro.njk" import govukSelect %}
+      <div class="filters-container">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-half">
+            {{ govukSelect({
+              id: "subject",
+              name: "subject",
+              label: {
+                text: "Subject",
+                classes: "govuk-label--s"
+              },
+              items: [
+                { value: "rwm", text: "Reading, writing and maths", selected: true },
+                { value: "reading", text: "Reading" },
+                { value: "writing", text: "Writing" },
+                { value: "maths", text: "Maths" }
+              ]
+            }) }}
           </div>
 
-          <div class="bar-row">
-            <div class="bar-label">Similar schools average</div>
-            <div class="bar-container">
-              <span class="bar-fill bar-soft" style="width:62%;"></span>
-              <span class="bar-text">62%</span>
-            </div>
+          <div class="govuk-grid-column-one-half">
+            {{ govukSelect({
+              id: "pupil",
+              name: "pupil",
+              label: {
+                text: "Pupil characteristic",
+                classes: "govuk-label--s"
+              },
+              items: [
+                { value: "all", text: "All pupils", selected: true },
+                { value: "disadvantaged", text: "Disadvantaged pupils" },
+                { value: "sen", text: "Pupils with SEN" },
+                { value: "eal", text: "English as an additional language" }
+              ]
+            }) }}
           </div>
-
-          <div class="bar-row">
-            <div class="bar-label">Local authority schools average</div>
-            <div class="bar-container">
-              <span class="bar-fill bar-soft" style="width:60%;"></span>
-              <span class="bar-text">60%</span>
-            </div>
-          </div>
-
-          <div class="bar-row">
-            <div class="bar-label">Schools in England average</div>
-            <div class="bar-container">
-              <span class="bar-fill bar-soft" style="width:50%;"></span>
-              <span class="bar-text">50%</span>
-            </div>
-          </div>
-
-          <div class="bar-axis">
-            <span>0%</span>
-            <span>25%</span>
-            <span>50%</span>
-            <span>75%</span>
-            <span>100%</span>
-          </div>
-
         </div>
       </div>
-    {% endset %}
 
-    {# New placeholder tabs #}
-    {% set yearByYearHtml %}
-      <div class="fixed-tab-panel">
-        <p class="govuk-body">Content coming soon.</p>
-      </div>
-    {% endset %}
+      {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+      {% from "govuk/components/table/macro.njk" import govukTable %}
 
-    {% set tableHtml %}
-      <div class="fixed-tab-panel">
-        <p class="govuk-body">Table view coming soon.</p>
-      </div>
-    {% endset %}
+      {# Primary tab content (existing chart) #}
+      {% set threeYearAvgHtml %}
+        <figure class="fixed-tab-panel" style="margin:0;">
 
-    {{ govukTabs({
-      items: [
-        {
-          label: "3 year average",
-          id: "three-year-average",
-          panel: { html: threeYearAvgHtml }
-        },
-        {
-          label: "Year by year",
-          id: "year-by-year",
-          panel: { html: yearByYearHtml }
-        },
-        {
-          label: "Table",
-          id: "table",
-          panel: { html: tableHtml }
-        }
-      ]
-    }) }}
+          <div class="bar-chart-wrapper">
 
+            <div class="bar-row">
+              <div class="bar-label">Oak Nest Primary School</div>
+              <div class="bar-container">
+                <span class="bar-fill bar-school" style="width:52%;"></span>
+                <span class="bar-text">52%</span>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-label">Similar schools average</div>
+              <div class="bar-container">
+                <span class="bar-fill bar-soft" style="width:62%;"></span>
+                <span class="bar-text">62%</span>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-label">Local authority schools average</div>
+              <div class="bar-container">
+                <span class="bar-fill bar-soft" style="width:60%;"></span>
+                <span class="bar-text">60%</span>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-label">Schools in England average</div>
+              <div class="bar-container">
+                <span class="bar-fill bar-soft" style="width:50%;"></span>
+                <span class="bar-text">50%</span>
+              </div>
+            </div>
+
+            <div class="bar-axis">
+              <span>0%</span>
+              <span>25%</span>
+              <span>50%</span>
+              <span>75%</span>
+              <span>100%</span>
+            </div>
+
+          </div>
+        </figure>
+      {% endset %}
+
+      {# Placeholder tabs #}
+      {% set yearByYearHtml %}
+        <div class="fixed-tab-panel">
+          <p class="govuk-body">Content coming soon.</p>
+        </div>
+      {% endset %}
+
+      {% set tableHtml %}
+        <div class="fixed-tab-panel">
+          <p class="govuk-body">Table view coming soon.</p>
+        </div>
+      {% endset %}
+
+      {{ govukTabs({
+        items: [
+          {
+            label: "3 year average",
+            id: "three-year-average",
+            panel: { html: threeYearAvgHtml }
+          },
+          {
+            label: "Year by year",
+            id: "year-by-year",
+            panel: { html: yearByYearHtml }
+          },
+          {
+            label: "Table",
+            id: "table",
+            panel: { html: tableHtml }
+          }
+        ]
+      }) }}
+
+    </div>
 
     <h2 id="improve" class="govuk-heading-m govuk-!-margin-top-7">Your next steps</h2>
 
@@ -338,7 +359,6 @@
 
     <div class="action-card">
       <div class="action-icon" style="background:#f4d7e5">
-        <!-- UPDATED ICON (matches yellow) -->
         <svg viewBox="0 0 20 20">
           <path fill="#7a1e3a"
                 d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z" />
@@ -358,4 +378,3 @@
 </div>
 
 {% endblock %}
-``
