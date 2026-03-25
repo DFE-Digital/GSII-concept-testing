@@ -45,6 +45,8 @@
   .main-content { width: 60%; float: left; }
   .sidebar { width: 40%; float: left; padding-left: 20px; box-sizing: border-box; }
 
+  .full-width { clear: both; margin-top: 40px; }
+
   /* -----------------------------
      Bar chart
   ----------------------------- */
@@ -61,56 +63,81 @@
   .bar-container::after { left: 75%; }
   .bar-axis { display: flex; justify-content: space-between; font-family: "GDS Transport", Arial, sans-serif; font-size: 16px; margin-top: 8px; color: #0b0c0c; position: relative; }
   .bar-axis span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 6px; background: #505a5f; transform: translateX(-50%); opacity: 0.5; }
-
   /* -----------------------------
-     Performance insight card
+     Performance insight card (highlighted)
   ----------------------------- */
-  .app-performance-card { border: 1px solid #d8d8d8; padding: 20px; background: #ffffff; margin-top: 30px; }
-  .app-performance-card__value { font-size: 2.8rem; font-weight: 700; color: #16548a; margin: 10px 0; }
-  .app-performance-card__inset { background-color: #f3f2f1; padding: 12px; margin: 15px 0; }
-  .app-performance-card__title {
-    border-bottom: 1px solid #b1b4b6;  /* this creates the divider */
-    padding-bottom: 10px;
-    margin-bottom: 16px;
+  .app-performance-card {
+    border: 1px solid 	#cecece; /* GOV.UK red/pink */
+    background: #ffffff;
+    margin-top: 100px;
   }
 
+  .app-performance-card__title {
+    background-color: 	#f3f3f3;
+    padding: 15px 20px;
+    margin: 0; /* remove spacing */
+  }
+
+  .app-performance-card__title h2 {
+    color: 	#0b0c0c;
+    margin: 0;
+  }
+
+  .app-performance-card__body {
+    padding: 20px;
+  }
+
+  .app-performance-card__value {
+    font-size: 4rem;
+    font-weight: 700;
+    color: 	#16548a; /* match header colour */
+    margin: 10px 0;
+  }
   /* -----------------------------
-     Related content (sidebar)
+     Next steps (enhanced)
   ----------------------------- */
   .action-card {
     display: grid;
-    grid-template-columns: 60px 1fr; /* smaller icon */
-    column-gap: 15px; /* closer together */
-    padding: 10px 0; /* reduced vertical padding */
-    align-items: start;
+    grid-template-columns: 80px 1fr; /* bigger icon column */
+    column-gap: 20px;
+    padding: 15px 0; /* more breathing room */
+    align-items: center; /* vertically centre content */
   }
-  .action-card + .action-card { margin-top: 5px; } /* smaller gap between cards */
+
+  .action-card + .action-card {
+    margin-top: 10px; /* more spacing between cards */
+  }
+
   .action-icon {
-    width: 60px;
-    height: 60px;
+    width: 80px;   /* bigger box */
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 0; /* sharp edges */
   }
-  .action-icon svg { width: 30px; height: 30px; }
+
+  .action-icon svg {
+    width: 40px;  /* bigger icon */
+    height: 40px;
+  }
+
   .action-content a {
     font-family: "GDS Transport", Arial, sans-serif;
     font-weight: 700;
-    font-size: 1.1875rem;
+    font-size: 1.25rem; /* slightly larger title */
     line-height: 1.3;
     text-decoration: underline;
     color: #1d70b8;
   }
+
   .action-description {
-    margin-top: 2px; /* smaller gap below title */
+    margin-top: 4px;
     font-family: "GDS Transport", Arial, sans-serif;
     font-size: 1.1875rem;
-    line-height: 1.35;
+    line-height: 1.4;
     color: #0b0c0c;
   }
 
-  /* Clear floats */
   .clearfix::after { content: ""; display: table; clear: both; }
 </style>
 
@@ -120,26 +147,23 @@
   Compare your KS4 headline measures with similar schools and local authority averages.
 </p>
 
-<!-- SECONDARY NAV -->
 <nav class="app-secondary-nav">
   <ul class="app-secondary-nav__list">
     <li class="app-secondary-nav__item app-secondary-nav__item--active">
-      <a href="#" data-section="section-1" class="app-secondary-nav__link">Attainment 8</a>
+      <a href="#" class="app-secondary-nav__link">Attainment 8</a>
     </li>
     <li class="app-secondary-nav__item">
-      <a href="#" data-section="section-2" class="app-secondary-nav__link">English and maths GCSE</a>
+      <a href="#" class="app-secondary-nav__link">English and maths GCSE</a>
     </li>
     <li class="app-secondary-nav__item">
-      <a href="#" data-section="section-3" class="app-secondary-nav__link">Staying in education or entering employment</a>
+      <a href="#" class="app-secondary-nav__link">Staying in education or entering employment</a>
     </li>
   </ul>
 </nav>
 
 <div class="clearfix">
 
-  <!-- MAIN CONTENT -->
   <div class="main-content">
-
     <h2 class="govuk-heading-m">Your attainment 8 score</h2>
 
     {% from "govuk/components/tabs/macro.njk" import govukTabs %}
@@ -168,124 +192,77 @@
       </div>
     {% endset %}
 
-    {% set yearByYearHtml %}<div class="fixed-tab-panel"><p class="govuk-body">Content coming soon.</p></div>{% endset %}
-    {% set tableHtml %}<div class="fixed-tab-panel"><p class="govuk-body">Table view coming soon.</p></div>{% endset %}
-
     {{ govukTabs({
       items: [
-        { label: "3 year average", panel: { html: pastDayHtml } },
-        { label: "Year by year", panel: { html: yearByYearHtml } },
-        { label: "Table", panel: { html: tableHtml } }
+        { label: "3 year average", panel: { html: pastDayHtml } }
       ]
     }) }}
 
+  </div>
+
+  <div class="sidebar">
     <section class="app-performance-card" aria-labelledby="performance-insight-title">
 
-      <!-- Title with divider -->
       <div class="app-performance-card__title">
-        <h2 id="performance-insight-title" class="govuk-heading-m govuk-!-margin-bottom-0">
-          Get support
+        <h2 id="performance-insight-title" class="govuk-heading-m">
+          Performance insight
         </h2>
       </div>
 
-      <!-- Metric content -->
-      <div class="app-performance-card__metric">
-        <p class="govuk-body govuk-!-margin-bottom-1">
-          Compared with similar schools
-        </p>
+      <div class="app-performance-card__body">
 
-        <p class="app-performance-card__value">
-          -2
-        </p>
+        <p class="govuk-body">Compared with similar schools</p>
 
-        <p class="govuk-body govuk-!-margin-bottom-0">
+        <p class="app-performance-card__value">-2</p>
+
+        <p class="govuk-body">
           Your Attainment 8 score is slightly below similar schools.
         </p>
+
+        {{ govukInsetText({
+        text: "The score difference is most prevalent when you compare boys’ attainment 8 score with similar schools."
+        }) }}
+
       </div>
-
-      <!-- Inset warning / extra info -->
-      <div class="app-performance-card__inset">
-        <p class="govuk-body govuk-!-margin-bottom-0">
-          The score difference is most prevalent when you compare boys’ attainment 8 score with similar schools.
-        </p>
-      </div>
-
-      <!-- Action links -->
-      <p class="govuk-body govuk-!-margin-bottom-2">
-        <a href="https://www.gov.uk/government/publications/rise-support-for-improving-attainment-in-schools/rise-attainment-improvement" class="govuk-link">
-          Browse conferences, search for continuing professional development and get subject-specific support
-        </a>
-      </p>
-
-      <p class="govuk-body govuk-!-margin-bottom-2">
-        <a href="https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit" class="govuk-link">
-          Use the EEF teaching and learning toolkit
-        </a>
-      </p>
-
-      <p class="govuk-body govuk-!-margin-bottom-2">
-        <a href="https://www.ncetm.org.uk/maths-hubs/find-your-hub" class="govuk-link">
-          Get support from your local maths hub
-        </a>
-      </p>
 
     </section>
-
   </div>
-
-<!--  &lt;!&ndash; SIDEBAR &ndash;&gt;-->
-<!--  <div class="sidebar">-->
-<!--    <h3 class="govuk-heading-m">Your next steps</h3>-->
-
-<!--    <div class="action-card">-->
-<!--      <div class="action-icon" style="background:#f9e6b3">-->
-<!--        <svg viewBox="0 0 20 20"><path fill="#6a4a00" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>-->
-<!--      </div>-->
-<!--      <div class="action-content">-->
-<!--        <a href="#">Explore RISE attainment resources</a>-->
-<!--        <p class="action-description">Browse conferences, professional development, or contact hubs for support.</p>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="action-card">-->
-<!--      <div class="action-icon" style="background:#ddd6ec">-->
-<!--        <svg viewBox="0 0 20 20"><path fill="#4c2c92" d="M10 2a8 8 0 110 16 8 8 0 010-16zm1 11V8H9v5h2zm0-7V5H9v1h2z"/></svg>-->
-<!--      </div>-->
-<!--      <div class="action-content">-->
-<!--        <a href="#">Get support from your local maths hub</a>-->
-<!--        <p class="action-description">Maths hubs help improve teaching through professional development and evidence-based practice.</p>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="action-card">-->
-<!--      <div class="action-icon" style="background:#f4d7e5">-->
-<!--        <svg viewBox="0 0 20 20"><path fill="#7a1e3a" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>-->
-<!--      </div>-->
-<!--      <div class="action-content">-->
-<!--        <a href="#">Improve literacy in secondary schools</a>-->
-<!--        <p class="action-description">Read the EEF’s guidance on improving literacy in all subject areas.</p>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--  </div>-->
 
 </div>
 
-<script>
-  // Secondary nav functionality
-  const navLinks = document.querySelectorAll('.app-secondary-nav__link');
-  const sections = document.querySelectorAll('.side-section');
+<div class="full-width">
+  <h3 class="govuk-heading-m">Your next steps</h3>
 
-  navLinks.forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = link.dataset.section;
-      sections.forEach(sec => sec.style.display = 'none');
-      document.getElementById(target).style.display = 'block';
-      navLinks.forEach(l => l.parentElement.classList.remove('app-secondary-nav__item--active'));
-      link.parentElement.classList.add('app-secondary-nav__item--active');
-    });
-  });
-</script>
+  <div class="action-card">
+    <div class="action-icon" style="background:#f9e6b3">
+      <svg viewBox="0 0 20 20"><path fill="#6a4a00" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>
+    </div>
+    <div class="action-content">
+      <a href="#">Explore RISE attainment resources</a>
+      <p class="action-description">Browse conferences, professional development, or contact hubs for support.</p>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-icon" style="background:#ddd6ec">
+      <svg viewBox="0 0 20 20"><path fill="#4c2c92" d="M10 2a8 8 0 110 16 8 8 0 010-16zm1 11V8H9v5h2zm0-7V5H9v1h2z"/></svg>
+    </div>
+    <div class="action-content">
+      <a href="#">Get support from your local maths hub</a>
+      <p class="action-description">Maths hubs help improve teaching through professional development and evidence-based practice.</p>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-icon" style="background:#f4d7e5">
+      <svg viewBox="0 0 20 20"><path fill="#7a1e3a" d="M4 3h12v2H4V3zm0 4h12v10H4V7zm2 2v2h8V9H6zm0 3v2h5v-2H6z"/></svg>
+    </div>
+    <div class="action-content">
+      <a href="#">Improve literacy in secondary schools</a>
+      <p class="action-description">Read the EEF’s guidance on improving literacy in all subject areas.</p>
+    </div>
+  </div>
+
+</div>
 
 {% endblock %}
