@@ -17,9 +17,31 @@
 /* -------------------------------------------------------
    BAR CHART
 ------------------------------------------------------- */
+
+/* NEW: grouping (blue box) */
+.data-grouping {
+  background-color: #f4f8fb;
+  padding: 20px 20px 1px 20px;
+  border-radius: 4px;
+  max-width: 650px;
+}
+
+/* NEW: keep tabs panel white */
+.govuk-tabs__panel {
+  background-color: #ffffff !important;
+  border: 1px solid #d0d0d0;
+  padding: 24px;
+  border-radius: 4px;
+}
+
+/* NEW: spacing for filters */
+.filters-container {
+  margin-bottom: 10px;
+}
+
 .bar-chart-wrapper {
   max-width: 650px;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .bar-row {
@@ -165,90 +187,121 @@ body {
       score against <a class="govuk-link" href="#">similar schools</a>.
     </p>
 
+    {% from "govuk/components/select/macro.njk" import govukSelect %}
     {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 
-    {% set pastDayHtml %}
-      <div class="fixed-tab-panel">
+    <!-- NEW: blue grouping wrapper -->
+    <div class="data-grouping">
+
+      <!-- NEW: filters -->
+      <div class="filters-container">
+
         <h2 class="govuk-heading-m">Attainment 8 score across all pupils</h2>
+        <div class="govuk-grid-row">
 
-        <div class="bar-chart-wrapper">
-
-          <div class="bar-row">
-            <div class="bar-label">Oak Nest Secondary School</div>
-            <div class="bar-container">
-              <span class="bar-fill bar-school" style="width:50%;"></span>
-              <span class="bar-text">45</span>
-            </div>
+          <div class="govuk-grid-column-one-half">
+            {{ govukSelect({
+              id: "pupil",
+              name: "pupil",
+              label: {
+                text: "Pupil characteristic",
+                classes: "govuk-label--s"
+              },
+              items: [
+                { value: "all", text: "All pupils", selected: true },
+                { value: "disadvantaged", text: "Disadvantaged pupils" },
+                { value: "sen", text: "Pupils with SEN" },
+                { value: "eal", text: "English as an additional language" }
+              ]
+            }) }}
           </div>
-
-          <div class="bar-row">
-            <div class="bar-label">Similar schools average</div>
-            <div class="bar-container">
-              <span class="bar-fill bar-soft" style="width:52.2%;"></span>
-              <span class="bar-text">47</span>
-            </div>
-          </div>
-
-          <div class="bar-row">
-            <div class="bar-label">Local authority schools average</div>
-            <div class="bar-container">
-              <span class="bar-fill bar-soft" style="width:44.4%;"></span>
-              <span class="bar-text">40</span>
-            </div>
-          </div>
-
-          <div class="bar-row">
-            <div class="bar-label">Schools in England average</div>
-            <div class="bar-container">
-              <span class="bar-fill bar-soft" style="width:50%;"></span>
-              <span class="bar-text">45</span>
-            </div>
-          </div>
-
-          <div class="bar-axis">
-            <span>0</span>
-            <span>30</span>
-            <span>60</span>
-            <span>90</span>
-          </div>
-
         </div>
       </div>
-    {% endset %}
 
-    {% set yearByYearHtml %}
-      <div class="fixed-tab-panel">
-        <p class="govuk-body">Content coming soon.</p>
-      </div>
-    {% endset %}
+      {% set pastDayHtml %}
+        <div class="fixed-tab-panel">
 
-    {% set tableHtml %}
-      <div class="fixed-tab-panel">
-        <p class="govuk-body">Table view coming soon.</p>
-      </div>
-    {% endset %}
 
-    {{ govukTabs({
-      items: [
-        {
-          label: "3 year average",
-          id: "past-day",
-          panel: { html: pastDayHtml }
-        },
-        {
-          label: "Year by year",
-          id: "year-by-year",
-          panel: { html: yearByYearHtml }
-        },
-        {
-          label: "Table",
-          id: "table",
-          panel: { html: tableHtml }
-        }
-      ]
-    }) }}
+          <div class="bar-chart-wrapper">
 
-    <!-- PERFORMANCE INSIGHT CARD -->
+            <div class="bar-row">
+              <div class="bar-label">Oak Nest Secondary School</div>
+              <div class="bar-container">
+                <span class="bar-fill bar-school" style="width:50%;"></span>
+                <span class="bar-text">45</span>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-label">Similar schools average</div>
+              <div class="bar-container">
+                <span class="bar-fill bar-soft" style="width:52.2%;"></span>
+                <span class="bar-text">47</span>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-label">Local authority schools average</div>
+              <div class="bar-container">
+                <span class="bar-fill bar-soft" style="width:44.4%;"></span>
+                <span class="bar-text">40</span>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-label">Schools in England average</div>
+              <div class="bar-container">
+                <span class="bar-fill bar-soft" style="width:50%;"></span>
+                <span class="bar-text">45</span>
+              </div>
+            </div>
+
+            <div class="bar-axis">
+              <span>0</span>
+              <span>30</span>
+              <span>60</span>
+              <span>90</span>
+            </div>
+
+          </div>
+        </div>
+      {% endset %}
+
+      {% set yearByYearHtml %}
+        <div class="fixed-tab-panel">
+          <p class="govuk-body">Content coming soon.</p>
+        </div>
+      {% endset %}
+
+      {% set tableHtml %}
+        <div class="fixed-tab-panel">
+          <p class="govuk-body">Table view coming soon.</p>
+        </div>
+      {% endset %}
+
+      {{ govukTabs({
+        items: [
+          {
+            label: "3 year average",
+            id: "past-day",
+            panel: { html: pastDayHtml }
+          },
+          {
+            label: "Year by year",
+            id: "year-by-year",
+            panel: { html: yearByYearHtml }
+          },
+          {
+            label: "Table",
+            id: "table",
+            panel: { html: tableHtml }
+          }
+        ]
+      }) }}
+
+    </div>
+
+    <!-- PERFORMANCE INSIGHT CARD (UNCHANGED) -->
     <section class="app-performance-card" aria-labelledby="performance-insight-title">
 
       <div class="app-performance-card__title">
